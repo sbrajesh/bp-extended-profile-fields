@@ -54,7 +54,7 @@ class BP_Extended_Profile_Fields_Helper{
         
         
         $files = array(
-                'classes.php',
+                'fields-manager.php',
                 'fields/base-field.php',
                 'fields/email-field.php',
                 'fields/groups.php',
