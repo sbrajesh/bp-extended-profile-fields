@@ -11,16 +11,16 @@ class BP_Xprofile_Custom_Field{
         $this->label = $label;
         /*
         //show field on registration page/profile edit page
-        add_filter( 'bp_custom_profile_edit_fields_pre_visibility', array( $this, 'render' ) );
+       
         
 
         add_filter( 'bp_get_the_profile_field_value', array( $this, 'field_value' ), 10, 3 );
         
         add_filter( 'xprofile_get_field_data', array( $this, 'get_field_data' ), 10, 3 );
         //add_filter( 'bp_get_the_profile_field_value', array( $this, 'filter_value' ), 10, 3 );
+        */
+       
         
-        //save the field
-        add_action( 'xprofile_field_after_save', array( $this, 'save' ));*/
     }
     
     
@@ -38,21 +38,26 @@ class BP_Xprofile_Custom_Field{
     /**
      * Render Field for admin Add/Edit field page
      */
-    public function admin_render(){
+    public function admin_field(){
         
     }
     
     /**
-     * Render Field for  Add/Edit page form
+     * Render Field for  Add/Edit profile field page form
      */
-    public function admin_render_form( $field ){
+    public function admin_edit_field( $field ){
         
     }
     
     
     function save( BP_XProfile_Field $field ){
         
+        //now anyone can use this to save extra data
+        
     }
+    
+    
+    
     
     function field_value( $val, $type, $id ){
         

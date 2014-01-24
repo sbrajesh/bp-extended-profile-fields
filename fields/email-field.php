@@ -7,7 +7,7 @@ class BP_Xprofile_Email_Field extends BP_Xprofile_Custom_Field {
         parent::__construct('email', 'Email' );
     }
     
-    public function admin_render( $field ) {
+    public function admin_field( $field ) {
         
                 if( $this->type != $field->type )
             return ;
@@ -18,7 +18,7 @@ class BP_Xprofile_Email_Field extends BP_Xprofile_Custom_Field {
       <?php           
     }
     
-    public function admin_render_form( $field ) {
+    public function admin_edit_field( $field ) {
         
     }
     public function render() {

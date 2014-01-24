@@ -26,7 +26,10 @@ class BP_Extended_Profile_Fields_Manager{
         add_action( 'xprofile_field_additional_options', array( $this, 'admin_render_select' ) );
         add_action( 'xprofile_field_additional_options', array( $this, 'admin_render_form' ) );
         
+        add_action( 'xprofile_field_after_save', array( $this, 'save' ));
         
+        
+         add_filter( 'bp_custom_profile_edit_fields_pre_visibility', array( $this, 'render' ) );
     }
     
     /**
@@ -62,13 +65,13 @@ class BP_Extended_Profile_Fields_Manager{
         return $types;
     }
     /**
-     * 
+     *  Show in the list of fields as on xprofile fields list
      * @param BP_Xprofile_Field $field
      */
     public function admin_render( $field ) {
 
         if( isset( $this->fields[$field->type] ) )
-            $this->fields[$field->type]->admin_render( $field );
+            $this->fields[$field->type]->admin_field( $field );
             
         
     }
@@ -91,7 +94,23 @@ class BP_Extended_Profile_Fields_Manager{
     public function admin_render_form( $current_field ){
 
        foreach( $this->fields as $field )    
-            $field->admin_render_form( $current_field );        
+            $field->admin_edit_field( $current_field );        
+    }
+    
+    public function save( $field ){
+               if( isset( $this->fields[$field->type] ) )
+                $this->fields[$field->type]->save( $field ); 
+    }
+    
+    /**
+     *  Render on edit/register page
+     * @global type $field
+     */
+    public function render( ){
+        global $field;
+        if( isset( $this->fields[$field->type]))
+            $this->fields[$field->type]->render ( $field );
+        
     }
 }
 
