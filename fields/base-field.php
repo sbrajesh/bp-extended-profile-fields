@@ -14,7 +14,7 @@ class BP_Xprofile_Custom_Field{
        
         
 
-        add_filter( 'bp_get_the_profile_field_value', array( $this, 'field_value' ), 10, 3 );
+        
         
         add_filter( 'xprofile_get_field_data', array( $this, 'get_field_data' ), 10, 3 );
         //add_filter( 'bp_get_the_profile_field_value', array( $this, 'filter_value' ), 10, 3 );
@@ -68,7 +68,8 @@ class BP_Xprofile_Custom_Field{
     }
     
     //return the aactual value
-    public function value(){
+    public function value( $val, $type, $id ) {
+        
         
         
     }

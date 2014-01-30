@@ -30,6 +30,8 @@ class BP_Extended_Profile_Fields_Manager{
         
         
          add_filter( 'bp_custom_profile_edit_fields_pre_visibility', array( $this, 'render' ) );
+         
+         add_filter( 'bp_get_the_profile_field_value', array( $this, 'field_value' ), 100, 3 );
     }
     
     /**
@@ -74,6 +76,18 @@ class BP_Extended_Profile_Fields_Manager{
             $this->fields[$field->type]->admin_field( $field );
             
         
+    }
+    /**
+     *  Show in the list of fields as on xprofile fields list
+     * @param BP_Xprofile_Field $field
+     */
+    public function field_value( $val, $field_type, $field_id ) {
+
+        if( isset( $this->fields[$field_type] ) )
+           $val = $this->fields[$field_type]->value( $val, $field_type, $field_id );
+            
+        
+        return $val;
     }
     
     /**

@@ -1,10 +1,12 @@
 <?php
-
+/**
+ * Multiselect group Fields Example
+ */
 class BP_Xprofile_Groups_Field extends BP_Xprofile_Custom_Field {
     
     
     public function __construct() {
-        parent::__construct('group', 'Group' );
+        parent::__construct( 'group', 'Group' );
     }
     /**
      * Display in fields list
@@ -68,7 +70,7 @@ class BP_Xprofile_Groups_Field extends BP_Xprofile_Custom_Field {
         ?>
         <label for="<?php bp_the_profile_field_input_name(); ?>"><?php bp_the_profile_field_name(); ?> <?php if ( bp_get_the_profile_field_is_required() ) : ?><?php _e( '(required)', 'buddypress' ); ?><?php endif; ?></label>
 	
-       <select name="<?php bp_the_profile_field_input_name(); ?>" id="<?php bp_the_profile_field_input_name(); ?>" multiple="multiple" <?php if ( bp_get_the_profile_field_is_required() ) : ?>aria-required="true"<?php endif; ?>>
+       <select name="<?php bp_the_profile_field_input_name(); ?>[]" id="<?php bp_the_profile_field_input_name(); ?>" multiple="multiple" <?php if ( bp_get_the_profile_field_is_required() ) : ?>aria-required="true"<?php endif; ?>>
            <?php
            if ( !method_exists( $field, 'get_children' ) ) {
 			$field_obj = new BP_XProfile_Field( $field->id );
@@ -81,7 +83,8 @@ class BP_Xprofile_Groups_Field extends BP_Xprofile_Custom_Field {
 
 			$field = $field_obj;
 		}
-           $options = $field->get_children();
+                $options = $field->get_children();
+                //copy paste from multi select box, can we make better?
 		$original_option_values = '';
                 $original_option_values = maybe_unserialize( BP_XProfile_ProfileData::get_value_byid( $field->id ) );
                 
@@ -115,14 +118,14 @@ class BP_Xprofile_Groups_Field extends BP_Xprofile_Custom_Field {
                         if ( !is_array( $original_option_values ) && empty( $option_values ) && !empty( $options[$k]->is_default_option ) ) {
                                 $selected = ' selected="selected"';
                         }
-                        $group = groups_get_group(array('group_id'=>$options[$k]->name ) );
+                        $group = groups_get_group( array( 'group_id' => $options[$k]->name ) );
                         
                         echo  apply_filters( 'bp_get_the_profile_field_options_multiselect', '<option' . $selected . ' value="' . esc_attr( stripslashes( $options[$k]->name ) ) . '">' . $group->name . '</option>', $options[$k], $field->id, $selected, $k );
 
                 }
                         ?>
 
-					</select>
+    </select>
      <?php    
     }
     
@@ -138,7 +141,8 @@ class BP_Xprofile_Groups_Field extends BP_Xprofile_Custom_Field {
       global $bp, $wpdb;
       if( !$field->id )
             $field->id = $wpdb->insert_id;
-       if( !empty($_POST['groups-selected'])){
+      
+       if( !empty( $_POST['groups-selected'] ) ) {
            
            $groups_selected = $_POST['groups-selected'];
           
@@ -174,6 +178,34 @@ class BP_Xprofile_Groups_Field extends BP_Xprofile_Custom_Field {
        }
    }
     
+   /**
+    * Returns the linked group name for bp_get_the_profile_field_value
+    * @param type $val
+    * @param type $type
+    * @param type $id
+    * @return type
+    */
+   public function value($val, $type, $id) {
+       
+       $field = new BP_XProfile_Field( $id );
+       
+       $val = maybe_unserialize( $field->data->value );
+      
+       if( !is_array( $val ) )
+           $val = (array) $val;
+       
+       $groups = array();
+       
+       foreach( $val as $group_id ){
+           
+           $group = new BP_Groups_Group( $group_id );
+           $groups[] = "<a href='". bp_get_group_permalink( $group ). "'>". $group->name."</a>";
+       }  
+       
+       return join(',', $groups );
+       
+       
+   }
 }
 
 bp_custom_fields_manager()->register_field( new BP_Xprofile_Groups_Field() );
