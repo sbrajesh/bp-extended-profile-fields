@@ -6,7 +6,7 @@ class BP_Xprofile_Groups_Field extends BP_Xprofile_Custom_Field {
     
     
     public function __construct() {
-        parent::__construct( 'group', 'Group' );
+        parent::__construct( 'groups', 'Group' );
     }
     /**
      * Display in fields list
