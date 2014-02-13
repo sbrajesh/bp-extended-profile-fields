@@ -81,6 +81,26 @@ class BP_Xprofile_Custom_Field{
     function filter_value( $val, $type, $id){
         
     }
+    
+    /**
+     * Extends a field if it is not an instance of Bp Xprofile Field
+     * @param BP_XProfile_Field $field
+     * @return BP_XProfile_Field 
+     */
+    public function extend_field( $field ){
+        if ( !method_exists( $field, 'get_children' ) ) {
+			$field_obj = new BP_XProfile_Field( $field->id );
+
+			foreach( $field as $field_prop => $field_prop_value ) {
+				if ( !isset( $field_obj->{$field_prop} ) ) {
+					$field_obj->{$field_prop} = $field_prop_value;
+				}
+			}
+
+			$field = $field_obj;
+		}
+        return $field;
+    }
     /**
      * Get the field type
      * 
